@@ -1,4 +1,4 @@
-import { Config } from '../common/types/database/config';
+import type { Config } from '../common/types/database/config';
 import pkg from 'pg';
 
 class Database {
@@ -13,7 +13,6 @@ class Database {
 
 	public async connect() {
 		console.log('Establishing db connection');
-
 		await this.client
 			.connect()
 			.then(() => console.log('Connection established'))
