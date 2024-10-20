@@ -14,6 +14,17 @@ class BookRepository extends AbstractRepository<Book> {
 	public async getAll(query: string): Promise<Book[]> {
 		return (await this.db.query(query)).rows;
 	}
+
+	public async create(data: Book, query: string): Promise<Book> {
+		return (
+			await this.db.query(query, [
+				data.name,
+				data.description,
+				data.author,
+				data.image,
+			])
+		).rows[0];
+	}
 }
 
 export { BookRepository };

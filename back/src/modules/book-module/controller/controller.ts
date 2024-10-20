@@ -22,6 +22,20 @@ class BookController {
 			res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error });
 		}
 	};
+
+	public create: RequestHandler = async (
+		req: Request,
+		res: Response
+	): Promise<void> => {
+		try {
+			const book = await this.bookService.create(req.body);
+
+			res.status(HttpStatus.CREATED).json({ success: true, book });
+		} catch (error) {
+			console.error(error);
+			res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error });
+		}
+	};
 }
 
 export { BookController };
