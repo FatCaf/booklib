@@ -1,8 +1,8 @@
-import { DataBase } from '../../common/enums/database/database';
-import { Queries } from '../../common/enums/queries/queries';
-import { Book } from '../../common/types/book/book';
-import { BookRepository } from '../../repository/book-repository/book-repository';
-import queryService from '../query-service/query.service';
+import { DataBase } from '../../../common/enums/database/database';
+import { Queries } from '../../../common/enums/queries/queries';
+import type { Book } from '../../../common/types/book/book';
+import type { BookRepository } from '../../repository/book-repository/book-repository';
+import queryService from '../../../service/query-service/query.service';
 
 class BookService {
 	private repository: BookRepository;
