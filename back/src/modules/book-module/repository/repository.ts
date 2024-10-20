@@ -1,7 +1,7 @@
-import { Client } from 'pg';
-import { Book } from '../../common/types/book/book';
-import { Database } from '../../database/database';
-import { AbstractRepository } from '../repository';
+import type { Client } from 'pg';
+import type { Book } from '../../../common/types/book/book';
+import type { Database } from '../../../database/database';
+import { AbstractRepository } from '../../../repository/repository';
 
 class BookRepository extends AbstractRepository<Book> {
 	private db: Client;

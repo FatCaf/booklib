@@ -5,7 +5,7 @@
 	"main": "app.ts",
 	"type": "module",
 	"scripts": {
-		"test": "node --loader ts-node/esm src/db/db.ts"
+		"dev": "npx tsx --watch src/app.ts"
 	},
 	"keywords": [],
 	"author": "",
@@ -18,9 +18,8 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.3",
+		"@types/express": "^5.0.0",
 		"@types/node": "^22.7.5",
-		"@types/pg": "^8.11.10",
-		"nodemon": "^3.1.7",
-		"ts-node": "^10.9.2"
+		"@types/pg": "^8.11.10"
 	}
 }
