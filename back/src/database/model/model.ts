@@ -15,6 +15,16 @@ class AbstractModel {
 		const date = new Date().toISOString();
 		this.updatedAt = date;
 	}
+
+	public toPlainObject<T>(): T {
+		const plainObject: T = {
+			id: this.id,
+			createdAt: this.createdAt,
+			updatedAt: this.updatedAt,
+		} as T;
+
+		return plainObject;
+	}
 }
 
 export { AbstractModel };
