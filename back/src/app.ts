@@ -14,12 +14,8 @@ class Application {
 		this.bookModule = new BookModule(this.database, this.app);
 	}
 
-	public async initDb() {
-		await this.database.connect();
-	}
-
 	public async start() {
-		await this.initDb();
+		await this.database.connect();
 
 		this.app.use(express.json());
 
