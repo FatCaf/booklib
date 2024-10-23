@@ -1,9 +1,16 @@
+import {
+	DB_HOST,
+	DB_NAME,
+	DB_PASSWORD,
+	DB_USER,
+	PORT,
+} from '../../../helpers/get-envs/get-envs';
 import type { Config } from '../types/config/config';
 
 export const config: Config = {
-	host: process.env.DB_HOST || 'localhost',
-	user: process.env.DB_USER || 'postgres',
-	password: process.env.DB_PASSWORD || 'postgres',
-	database: process.env.DB_NAME || 'booklib',
-	port: 5432,
+	host: DB_HOST,
+	user: DB_USER,
+	password: DB_PASSWORD,
+	database: DB_NAME,
+	port: Number(PORT),
 };
