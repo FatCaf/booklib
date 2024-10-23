@@ -1,11 +1,11 @@
-import { Router } from 'express';
-import type { BookController } from '../controller/controller';
-import { AbstractRouter } from '../../../route/route';
+import { Router } from "express";
+import { AbstractRouter } from "../../../common/abstractions/router/router";
+import type { BookController } from "../controller/controller";
 
 class BookRouter extends AbstractRouter {
 	private bookController: BookController;
 
-	private router: Router;
+	private readonly router: Router;
 
 	constructor(bookController: BookController) {
 		super();
@@ -14,11 +14,11 @@ class BookRouter extends AbstractRouter {
 	}
 
 	public initRoutes() {
-		this.router.route('/').get(this.bookController.getAll);
-		this.router.route('/get/:id').get(this.bookController.getById);
-		this.router.route('/create').post(this.bookController.create);
-		this.router.route('/edit/:id').patch(this.bookController.edit);
-		this.router.route('/delete/:id').delete(this.bookController.delete);
+		this.router.route("/").get(this.bookController.getAll);
+		this.router.route("/get/:id").get(this.bookController.getById);
+		this.router.route("/create").post(this.bookController.create);
+		this.router.route("/edit/:id").patch(this.bookController.edit);
+		this.router.route("/delete/:id").delete(this.bookController.delete);
 	}
 
 	public getRouter() {

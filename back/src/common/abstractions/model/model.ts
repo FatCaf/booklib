@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 class AbstractModel {
 	public id!: string;
@@ -12,14 +12,11 @@ class AbstractModel {
 	}
 
 	public beforeInsert(): void {
-		const date = new Date().toISOString();
-		this.createdAt = date;
-		this.updatedAt = date;
+		this.createdAt = this.createdAt = new Date().toISOString();
 	}
 
 	public beforeUpdate(): void {
-		const date = new Date().toISOString();
-		this.updatedAt = date;
+		this.updatedAt = new Date().toISOString();
 	}
 
 	public update<T>(data: Partial<T>): T {
@@ -36,13 +33,11 @@ class AbstractModel {
 	}
 
 	public toPlainObject<T>(): T {
-		const plainObject: T = {
+		return {
 			id: this.id,
 			createdAt: this.createdAt,
 			updatedAt: this.updatedAt,
 		} as T;
-
-		return plainObject;
 	}
 }
 

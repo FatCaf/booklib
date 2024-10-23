@@ -1,4 +1,4 @@
-import type { Module } from '../common/types/module/module';
+import type { Module } from '../../types/module/module';
 
 class AbstractModule implements Module {
 	initModule(): void {

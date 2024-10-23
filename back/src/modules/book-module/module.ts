@@ -1,14 +1,14 @@
 import type { Application } from 'express';
-import type { Database } from '../../database/database';
-import { AbstractModule } from '../module';
-import { BookRepository } from './repository/repository';
-import { BookService } from './service/service';
-import { BookController } from './controller/controller';
-import { BookRouter } from './router/router';
+import { AbstractModule } from '../../common/abstractions/module/module';
 import { Routes } from '../../common/enums/routes/routes';
+import type { Database } from '../database-module/database/database';
+import { BookController } from './controller/controller';
+import { BookRepository } from './repository/repository';
+import { BookRouter } from './router/router';
+import { BookService } from './service/service';
 
 class BookModule extends AbstractModule {
-	private bookController: BookController;
+	private readonly bookController: BookController;
 
 	private bookRouter: BookRouter;
 

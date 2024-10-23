@@ -1,25 +1,21 @@
 import express from 'express';
+import type { Database } from './modules/database-module/database/database';
 import { BookModule } from './modules/book-module/module';
-import { config } from './database/config/config';
-import { Database } from './database/database';
+import { DatabaseModule } from './modules/database-module/module';
 
 class Application {
-	private database: Database;
+	private readonly database: Database;
 	private bookModule: BookModule;
-	private app;
+	private readonly app;
 
 	constructor() {
-		this.database = new Database(config);
+		this.database = new DatabaseModule().database;
 		this.app = express();
 		this.bookModule = new BookModule(this.database, this.app);
 	}
 
-	public async initDb() {
-		await this.database.connect();
-	}
-
 	public async start() {
-		await this.initDb();
+		await this.database.connect();
 
 		this.app.use(express.json());
 

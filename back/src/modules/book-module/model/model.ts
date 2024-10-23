@@ -1,5 +1,5 @@
-import type { Book } from '../types/book/book';
-import { AbstractModel } from '../../../database/model/model';
+import { AbstractModel } from "../../../common/abstractions/model/model";
+import type { Book } from "../types/book/book";
 
 class BookModel extends AbstractModel {
 	public name!: string;

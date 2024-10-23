@@ -1,14 +1,14 @@
-import type { Config } from '../common/types/database/config';
 import pkg from 'pg';
+import type { Config } from '../types/config/config';
 
 class Database {
-	#config: Config;
+	private readonly config: Config;
 
 	public client: pkg.Client;
 
 	constructor(config: Config) {
-		this.#config = config;
-		this.client = new pkg.Client(this.#config);
+		this.config = config;
+		this.client = new pkg.Client(this.config);
 	}
 
 	public async connect() {
