@@ -1,4 +1,4 @@
-import { Config } from '../../common/types/database/config';
+import type { Config } from '../types/config/config';
 
 export const config: Config = {
 	host: process.env.DB_HOST || 'localhost',
