@@ -1,33 +1,7 @@
-import express from 'express';
-import type { Database } from './modules/database-module/database/database';
-import { BookModule } from './modules/book-module/module';
-import { DatabaseModule } from './modules/database-module/module';
+import application from './modules/application-module/application';
 
-class Application {
-	private readonly database: Database;
-	private bookModule: BookModule;
-	private readonly app;
-
-	constructor() {
-		this.database = new DatabaseModule().database;
-		this.app = express();
-		this.bookModule = new BookModule(this.database, this.app);
-	}
-
-	public async start() {
-		await this.database.connect();
-
-		this.app.use(express.json());
-
-		this.bookModule.initModule();
-
-		this.app.listen(3000, () => {
-			console.log('Server running on port 3000');
-		});
-	}
+async function start(): Promise<void> {
+	await application.start();
 }
 
-const application = new Application();
-(async () => {
-	await application.start();
-})();
+start();
