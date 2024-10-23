@@ -1,8 +1,8 @@
-import type { Module } from "../../types/module/module";
+import type { Module } from '../../types/module/module';
 
 class AbstractModule implements Module {
 	initModule(): void {
-		throw new Error("Method not implemented.");
+		throw new Error('Method not implemented.');
 	}
 }
 
