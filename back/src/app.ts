@@ -21,6 +21,8 @@ class Application {
 	public async start() {
 		await this.initDb();
 
+		this.app.use(express.json());
+
 		this.bookModule.initModule();
 
 		this.app.listen(3000, () => {
