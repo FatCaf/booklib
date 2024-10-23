@@ -12,6 +12,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"cors": "^2.8.5",
+		"dotenv": "^16.4.5",
 		"express": "^4.21.1",
 		"pg": "^8.13.0",
 		"typescript": "^5.6.3",
@@ -19,6 +20,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.3",
+		"@types/dotenv": "^8.2.3",
 		"@types/express": "^5.0.0",
 		"@types/node": "^22.7.5",
 		"@types/pg": "^8.11.10",
