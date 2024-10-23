@@ -1,4 +1,4 @@
-import type { Book } from '../../../common/types/book/book';
+import type { Book } from '../types/book/book';
 import { AbstractModel } from '../../../database/model/model';
 
 class BookModel extends AbstractModel {
@@ -16,7 +16,22 @@ class BookModel extends AbstractModel {
 		this.description = book.description;
 		this.author = book.author;
 		this.image = book.image;
-		this.beforeInsert();
+
+		if (book.createdAt) {
+			this.createdAt = book.createdAt;
+		} else {
+			this.beforeInsert();
+		}
+
+		if (book.id) {
+			this.id = book.id;
+		} else {
+			this.generateId();
+		}
+	}
+
+	public update<T>(data: Partial<T>): T {
+		return super.update<T>(data);
 	}
 
 	public toPlainObject<T>(): T {
