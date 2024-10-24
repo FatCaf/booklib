@@ -1,10 +1,11 @@
-import { DataBase } from '../../../common/enums/database/database';
-import { Queries } from '../../../common/enums/queries/queries';
-import type { Book } from '../types/book/book';
-import type { BookRepository } from '../repository/repository';
-import queryService from '../../../service/query-service/query.service';
-import { BookModel } from '../model/model';
-import type { Service } from '../types/service/service';
+import { DataBase } from "../../../common/enums/database/database";
+import { Queries } from "../../../common/enums/queries/queries";
+import queryService from "../../../service/query-service/query.service";
+import { BookModel } from "../model/model";
+import type { BookRepository } from "../repository/repository";
+import type { Book } from "../types/book/book";
+import type { SearchQuery } from "../types/search-query/search-query";
+import type { Service } from "../types/service/service";
 
 class BookService implements Service {
 	private repository: BookRepository;
@@ -14,29 +15,40 @@ class BookService implements Service {
 	}
 
 	public async getById(id: string): Promise<Book> {
+		const field = queryService.createFieldsWithSequence<{ id: string }>({ id });
 		const query = queryService.generateQuery(Queries.GET_BY_ID, {
 			table: DataBase.BOOKS,
-			field: 'id',
-			sequence: '$1',
+			field,
 		});
 
 		const book = await this.repository.getById(id, query);
 
-		if (!book) throw 'Book not found';
+		if (!book) throw "Book not found";
 
 		return book;
 	}
 
-	public async getAll(): Promise<Book[]> {
+	public async getAll(offset: number): Promise<Book[]> {
 		const query = queryService.generateQuery(Queries.GET_ALL, {
 			table: DataBase.BOOKS,
 		});
 
 		const books = await this.repository.getAll(query);
 
-		if (!books) throw 'No books';
+		return books.slice(0, offset);
+	}
 
-		return books;
+	public async getAllSpecify(searchQuery: SearchQuery): Promise<Book[]> {
+		const { offset, ...rest } = searchQuery;
+		const searchString = queryService.createSearchString<SearchQuery>(rest);
+		const query = queryService.generateQuery(Queries.GET_ALL_SPECIFY, {
+			table: DataBase.BOOKS,
+			searchString,
+		});
+
+		const books = await this.repository.getAll(query, rest);
+
+		return books.slice(0, offset);
 	}
 
 	public async create(data: Book): Promise<Book> {
@@ -52,7 +64,7 @@ class BookService implements Service {
 
 		const newBook = await this.repository.create(book, query);
 
-		if (!newBook) throw 'Cant create book';
+		if (!newBook) throw "Cant create book";
 
 		return newBook;
 	}
@@ -74,21 +86,21 @@ class BookService implements Service {
 
 		const book = await this.repository.edit(editedBook, query);
 
-		if (!book) throw 'Cant update book';
+		if (!book) throw "Cant update book";
 
 		return book;
 	}
 
 	public async delete(id: string): Promise<Book> {
+		const field = queryService.createFieldsWithSequence<{ id: string }>({ id });
 		const query = queryService.generateQuery(Queries.DELETE, {
 			table: DataBase.BOOKS,
-			field: 'id',
-			sequence: '$1',
+			field,
 		});
 
 		const deletedBook = await this.repository.delete(id, query);
 
-		if (!deletedBook) throw 'Cant delete book';
+		if (!deletedBook) throw "Cant delete book";
 
 		return deletedBook;
 	}
