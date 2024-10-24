@@ -15,7 +15,8 @@ class BookRouter extends AbstractRouter {
 
 	public initRoutes() {
 		this.router.route("/").get(this.bookController.getAll);
-		this.router.route("/get/:id").get(this.bookController.getById);
+		this.router.route("/getAllSpecify").get(this.bookController.getAllSpecify);
+		this.router.route("/:id").get(this.bookController.getById);
 		this.router.route("/create").post(this.bookController.create);
 		this.router.route("/edit/:id").patch(this.bookController.edit);
 		this.router.route("/delete/:id").delete(this.bookController.delete);

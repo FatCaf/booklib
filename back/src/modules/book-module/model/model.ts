@@ -10,12 +10,15 @@ class BookModel extends AbstractModel {
 
 	public image!: string;
 
+	public year!: number;
+
 	constructor(book: Book) {
 		super();
 		this.name = book.name;
 		this.description = book.description;
 		this.author = book.author;
 		this.image = book.image;
+		this.year = book.year;
 
 		if (book.createdAt) {
 			this.createdAt = book.createdAt;
@@ -42,6 +45,7 @@ class BookModel extends AbstractModel {
 			description: this.description,
 			author: this.author,
 			image: this.image,
+			year: this.year,
 		};
 	}
 }
