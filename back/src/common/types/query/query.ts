@@ -3,4 +3,5 @@ export interface QueryParams {
 	fields?: string;
 	field?: string;
 	sequence?: string;
+	searchString?: string;
 }
