@@ -8,7 +8,7 @@ class AbstractRepository<T> implements Repository<T> {
 		throw new Error("Method not implemented.");
 	}
 
-	getAll(query: string): Promise<T[]> {
+	getAll(query: string, data?: Record<string, any>): Promise<T[]> {
 		throw new Error("Method not implemented.");
 	}
 
