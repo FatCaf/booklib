@@ -1,5 +1,6 @@
 import type { Request, RequestHandler, Response } from "express";
 import { HttpStatus } from "../../../common/enums/http-status/http-status";
+import { HttpError } from "../../../helpers/http-error/http-error";
 import type { UserService } from "../service/service";
 import type { Controller } from "../types/controller/controller";
 
@@ -18,7 +19,9 @@ class UserController implements Controller {
 
 			res.status(HttpStatus.OK).json({ success: true, user });
 		} catch (error) {
-			res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error });
+			if (error instanceof HttpError) {
+				res.status(error.statusCode).json({ message: error.message });
+			}
 		}
 	};
 	public register: RequestHandler = async (
@@ -30,7 +33,9 @@ class UserController implements Controller {
 
 			res.status(HttpStatus.CREATED).json({ success: true, user });
 		} catch (error) {
-			res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error });
+			if (error instanceof HttpError) {
+				res.status(error.statusCode).json({ message: error.message });
+			}
 		}
 	};
 }

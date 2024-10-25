@@ -1,5 +1,7 @@
+import { HttpStatus } from "../../common/enums/http-status/http-status";
 import { Queries } from "../../common/enums/queries/queries";
 import type { QueryParams } from "../../common/types/query/query";
+import { HttpError } from "../../helpers/http-error/http-error";
 
 class QueryService {
 	public generateQuery(action: string, params: QueryParams) {
@@ -20,7 +22,10 @@ class QueryService {
 			case Queries.DELETE:
 				return `DELETE FROM ${params.table} WHERE ${params.field} RETURNING *`;
 			default:
-				throw "Query does not exist";
+				throw new HttpError(
+					HttpStatus.INTERNAL_SERVER_ERROR,
+					"Cannot get book, invalid request query",
+				);
 		}
 	}
 
