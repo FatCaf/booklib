@@ -16,12 +16,12 @@ class BookService implements Service {
 
 	public async getById(id: string): Promise<Book> {
 		const field = queryService.createFieldsWithSequence<{ id: string }>({ id });
-		const query = queryService.generateQuery(Queries.GET_BY_ID, {
+		const query = queryService.generateQuery(Queries.SEARCH, {
 			table: DataBase.BOOKS,
 			field,
 		});
 
-		const book = await this.repository.getById(id, query);
+		const book = await this.repository.search(id, query);
 
 		if (!book) throw "Book not found";
 

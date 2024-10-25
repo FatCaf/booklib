@@ -20,8 +20,8 @@ class BookRepository extends AbstractRepository<Book> {
 		return (await this.db.query(query, [...queryParams])).rows;
 	}
 
-	public async getById(id: string, query: string): Promise<Book> {
-		return (await this.db.query(query, [id])).rows[0];
+	public async search(param: string | number, query: string): Promise<Book> {
+		return (await this.db.query(query, [param])).rows[0];
 	}
 
 	public async create(data: Book, query: string): Promise<Book> {
