@@ -1,5 +1,7 @@
 import { DataBase } from "../../../common/enums/database/database";
+import { HttpStatus } from "../../../common/enums/http-status/http-status";
 import { Queries } from "../../../common/enums/queries/queries";
+import { HttpError } from "../../../helpers/http-error/http-error";
 import queryService from "../../../service/query-service/query.service";
 import { BookModel } from "../model/model";
 import type { BookRepository } from "../repository/repository";
@@ -23,7 +25,7 @@ class BookService implements Service {
 
 		const book = await this.repository.search(id, query);
 
-		if (!book) throw "Book not found";
+		if (!book) throw new HttpError(HttpStatus.NOT_FOUND, "Book not found");
 
 		return book;
 	}
@@ -64,7 +66,8 @@ class BookService implements Service {
 
 		const newBook = await this.repository.create(book, query);
 
-		if (!newBook) throw "Cant create book";
+		if (!newBook)
+			throw new HttpError(HttpStatus.BAD_REQUEST, "Cannot create book");
 
 		return newBook;
 	}
@@ -86,7 +89,7 @@ class BookService implements Service {
 
 		const book = await this.repository.edit(editedBook, query);
 
-		if (!book) throw "Cant update book";
+		if (!book) throw new HttpError(HttpStatus.BAD_REQUEST, "Cant update book");
 
 		return book;
 	}
@@ -100,7 +103,11 @@ class BookService implements Service {
 
 		const deletedBook = await this.repository.delete(id, query);
 
-		if (!deletedBook) throw "Cant delete book";
+		if (!deletedBook)
+			throw new HttpError(
+				HttpStatus.NOT_FOUND,
+				"Cannot delete book, it does not exist",
+			);
 
 		return deletedBook;
 	}

@@ -1,5 +1,7 @@
 import { DataBase } from "../../../common/enums/database/database";
+import { HttpStatus } from "../../../common/enums/http-status/http-status";
 import { Queries } from "../../../common/enums/queries/queries";
+import { HttpError } from "../../../helpers/http-error/http-error";
 import queryService from "../../../service/query-service/query.service";
 import { UserModel } from "../model/model";
 import type { UserRepository } from "../repository/repository";
@@ -24,7 +26,8 @@ class UserService implements Service {
 		const user = await this.repository.search(data.email, query1);
 
 		if (user.password === data.password) return user;
-		else throw "Invalid login or password";
+
+		throw new HttpError(HttpStatus.UNAUTHORIZED, "Invalid login or password");
 	}
 	public async register(data: User): Promise<User> {
 		const newUser = new UserModel(data).toPlainObject<User>();
@@ -37,7 +40,8 @@ class UserService implements Service {
 		});
 
 		const user = await this.repository.create(newUser, query);
-		if (!user) throw "Cant create user";
+		if (!user)
+			throw new HttpError(HttpStatus.BAD_REQUEST, "Cannot create user");
 		return user;
 	}
 }
