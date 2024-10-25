@@ -2,7 +2,9 @@ import { DataBase } from "../../../common/enums/database/database";
 import { HttpStatus } from "../../../common/enums/http-status/http-status";
 import { Queries } from "../../../common/enums/queries/queries";
 import { HttpError } from "../../../helpers/http-error/http-error";
+import validate from "../../../helpers/joi-validate/validate";
 import queryService from "../../../service/query-service/query.service";
+import bookSchema from "../joi-schema/book";
 import { BookModel } from "../model/model";
 import type { BookRepository } from "../repository/repository";
 import type { Book } from "../types/book/book";
@@ -54,6 +56,11 @@ class BookService implements Service {
 	}
 
 	public async create(data: Book): Promise<Book> {
+		const isBookInvalid = validate<Book>(bookSchema, data);
+
+		if (isBookInvalid)
+			throw new HttpError(HttpStatus.BAD_REQUEST, isBookInvalid);
+
 		const book = new BookModel(data).toPlainObject<Book>();
 
 		const [fields, sequence] = queryService.createFieldsAndSequence(book);
@@ -73,6 +80,11 @@ class BookService implements Service {
 	}
 
 	public async edit(id: string, data: Partial<Book>): Promise<Book> {
+		const isBookInvalid = validate<Partial<Book>>(bookSchema, data);
+
+		if (isBookInvalid)
+			throw new HttpError(HttpStatus.BAD_REQUEST, isBookInvalid);
+
 		const oldBook = await this.getById(id);
 
 		const editedBook = new BookModel(oldBook).update<Book>(data);
