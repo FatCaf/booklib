@@ -6,7 +6,7 @@ class QueryService {
 		switch (action) {
 			case Queries.GET_ALL:
 				return `SELECT * FROM ${params.table}`;
-			case Queries.GET_BY_ID:
+			case Queries.SEARCH:
 				return `SELECT * FROM ${params.table} WHERE ${params.field}`;
 			case Queries.GET_ALL_SPECIFY:
 				return `SELECT * FROM ${params.table} ${params.searchString}`;

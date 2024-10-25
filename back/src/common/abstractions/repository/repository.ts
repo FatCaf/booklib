@@ -4,7 +4,7 @@ class AbstractRepository<T> implements Repository<T> {
 	edit(data: T, query: string): Promise<T> {
 		throw new Error("Method not implemented.");
 	}
-	getById(id: string, query: string): Promise<T> {
+	search(param: string | number, query: string): Promise<T> {
 		throw new Error("Method not implemented.");
 	}
 
