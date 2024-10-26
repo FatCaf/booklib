@@ -21,6 +21,10 @@ class UserController implements Controller {
 		} catch (error) {
 			if (error instanceof HttpError) {
 				res.status(error.statusCode).json({ message: error.message });
+			} else {
+				res
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.json({ message: "Unexpected error while trying to login" });
 			}
 		}
 	};
@@ -35,6 +39,10 @@ class UserController implements Controller {
 		} catch (error) {
 			if (error instanceof HttpError) {
 				res.status(error.statusCode).json({ message: error.message });
+			} else {
+				res
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.json({ message: "Unexpected error while trying to crate a user" });
 			}
 		}
 	};

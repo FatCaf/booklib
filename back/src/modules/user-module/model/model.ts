@@ -14,7 +14,7 @@ class UserModel extends AbstractModel {
 		super();
 		this.name = user.name;
 		this.email = user.email;
-		this.role = "user";
+		this.role = user.role || "user";
 		this.password = user.password;
 
 		if (user.createdAt) {
