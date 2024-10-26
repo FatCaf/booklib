@@ -1,12 +1,12 @@
-import path, { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import dotenv from "dotenv";
+import path, { dirname } from 'node:path';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = dirname(__filename);
 
-const envPath = path.resolve(__dirname, "../../../.env.local");
+const envPath = path.resolve(__dirname, '../../../.env.local');
 
 dotenv.config({ path: envPath });
 
@@ -16,18 +16,4 @@ const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const DB_NAME = process.env.DB_NAME;
 
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRATION = process.env.JWT_EXPIRATION;
-
-const SALT = process.env.SALT;
-
-export {
-	DB_PASSWORD,
-	DB_HOST,
-	PORT,
-	DB_USER,
-	DB_NAME,
-	JWT_SECRET,
-	JWT_EXPIRATION,
-	SALT,
-};
+export { DB_PASSWORD, DB_HOST, PORT, DB_USER, DB_NAME };
