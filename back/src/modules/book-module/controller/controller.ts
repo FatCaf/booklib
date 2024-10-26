@@ -1,8 +1,9 @@
 import type { Request, RequestHandler, Response } from "express";
 import { HttpStatus } from "../../../common/enums/http-status/http-status";
+import { HttpError } from "../../../helpers/http-error/http-error";
+import type { Controller } from "../common/types/controller/controller";
+import type { SearchQuery } from "../common/types/search-query/search-query";
 import type { BookService } from "../service/service";
-import type { Controller } from "../types/controller/controller";
-import type { SearchQuery } from "../types/search-query/search-query";
 
 class BookController implements Controller {
 	private bookService: BookService;
@@ -22,7 +23,9 @@ class BookController implements Controller {
 
 			res.status(HttpStatus.OK).json({ success: true, book });
 		} catch (error) {
-			res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error });
+			if (error instanceof HttpError) {
+				res.status(error.statusCode).json({ message: error.message });
+			}
 		}
 	};
 
@@ -36,8 +39,9 @@ class BookController implements Controller {
 
 			res.status(HttpStatus.OK).json({ success: true, books });
 		} catch (error) {
-			console.error(error);
-			res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error });
+			if (error instanceof HttpError) {
+				res.status(error.statusCode).json({ message: error.message });
+			}
 		}
 	};
 
@@ -58,8 +62,9 @@ class BookController implements Controller {
 
 			res.status(HttpStatus.OK).json({ success: true, books });
 		} catch (error) {
-			console.error(error);
-			res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error });
+			if (error instanceof HttpError) {
+				res.status(error.statusCode).json({ message: error.message });
+			}
 		}
 	};
 
@@ -74,8 +79,9 @@ class BookController implements Controller {
 				.status(HttpStatus.CREATED)
 				.json({ success: true, message: "Book created", book });
 		} catch (error) {
-			console.error(error);
-			res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error });
+			if (error instanceof HttpError) {
+				res.status(error.statusCode).json({ message: error.message });
+			}
 		}
 	};
 
@@ -91,8 +97,9 @@ class BookController implements Controller {
 				.status(HttpStatus.OK)
 				.json({ success: true, message: "Book updated", book });
 		} catch (error) {
-			console.error(error);
-			res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error });
+			if (error instanceof HttpError) {
+				res.status(error.statusCode).json({ message: error.message });
+			}
 		}
 	};
 
@@ -108,8 +115,9 @@ class BookController implements Controller {
 				.status(HttpStatus.OK)
 				.json({ success: true, message: "Book deleted", book });
 		} catch (error) {
-			console.error(error);
-			res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error });
+			if (error instanceof HttpError) {
+				res.status(error.statusCode).json({ message: error.message });
+			}
 		}
 	};
 }

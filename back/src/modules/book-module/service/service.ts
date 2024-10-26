@@ -1,11 +1,15 @@
 import { DataBase } from "../../../common/enums/database/database";
+import { HttpStatus } from "../../../common/enums/http-status/http-status";
 import { Queries } from "../../../common/enums/queries/queries";
+import { HttpError } from "../../../helpers/http-error/http-error";
+import validate from "../../../helpers/joi-validate/validate";
 import queryService from "../../../service/query-service/query.service";
+import type { Book } from "../common/types/book/book";
+import type { SearchQuery } from "../common/types/search-query/search-query";
+import type { Service } from "../common/types/service/service";
+import bookSchema from "../joi-schema/book";
 import { BookModel } from "../model/model";
 import type { BookRepository } from "../repository/repository";
-import type { Book } from "../types/book/book";
-import type { SearchQuery } from "../types/search-query/search-query";
-import type { Service } from "../types/service/service";
 
 class BookService implements Service {
 	private repository: BookRepository;
@@ -23,7 +27,7 @@ class BookService implements Service {
 
 		const book = await this.repository.search(id, query);
 
-		if (!book) throw "Book not found";
+		if (!book) throw new HttpError(HttpStatus.NOT_FOUND, "Book not found");
 
 		return book;
 	}
@@ -52,6 +56,11 @@ class BookService implements Service {
 	}
 
 	public async create(data: Book): Promise<Book> {
+		const isBookInvalid = validate<Book>(bookSchema.create, data);
+
+		if (isBookInvalid)
+			throw new HttpError(HttpStatus.BAD_REQUEST, isBookInvalid);
+
 		const book = new BookModel(data).toPlainObject<Book>();
 
 		const [fields, sequence] = queryService.createFieldsAndSequence(book);
@@ -64,12 +73,18 @@ class BookService implements Service {
 
 		const newBook = await this.repository.create(book, query);
 
-		if (!newBook) throw "Cant create book";
+		if (!newBook)
+			throw new HttpError(HttpStatus.BAD_REQUEST, "Cannot create book");
 
 		return newBook;
 	}
 
 	public async edit(id: string, data: Partial<Book>): Promise<Book> {
+		const isBookInvalid = validate<Partial<Book>>(bookSchema.edit, data);
+
+		if (isBookInvalid)
+			throw new HttpError(HttpStatus.BAD_REQUEST, isBookInvalid);
+
 		const oldBook = await this.getById(id);
 
 		const editedBook = new BookModel(oldBook).update<Book>(data);
@@ -86,7 +101,8 @@ class BookService implements Service {
 
 		const book = await this.repository.edit(editedBook, query);
 
-		if (!book) throw "Cant update book";
+		if (!book)
+			throw new HttpError(HttpStatus.BAD_REQUEST, "Cannot update book");
 
 		return book;
 	}
@@ -100,7 +116,11 @@ class BookService implements Service {
 
 		const deletedBook = await this.repository.delete(id, query);
 
-		if (!deletedBook) throw "Cant delete book";
+		if (!deletedBook)
+			throw new HttpError(
+				HttpStatus.NOT_FOUND,
+				"Cannot delete book, it does not exist",
+			);
 
 		return deletedBook;
 	}

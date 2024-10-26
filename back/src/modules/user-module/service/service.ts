@@ -1,6 +1,10 @@
 import { DataBase } from "../../../common/enums/database/database";
+import { HttpStatus } from "../../../common/enums/http-status/http-status";
 import { Queries } from "../../../common/enums/queries/queries";
+import { HttpError } from "../../../helpers/http-error/http-error";
+import validate from "../../../helpers/joi-validate/validate";
 import queryService from "../../../service/query-service/query.service";
+import userSchema from "../joi-schema/user";
 import { UserModel } from "../model/model";
 import type { UserRepository } from "../repository/repository";
 import type { Service } from "../types/service/service";
@@ -24,9 +28,15 @@ class UserService implements Service {
 		const user = await this.repository.search(data.email, query1);
 
 		if (user.password === data.password) return user;
-		else throw "Invalid login or password";
+
+		throw new HttpError(HttpStatus.UNAUTHORIZED, "Invalid login or password");
 	}
 	public async register(data: User): Promise<User> {
+		const isUserInvalid = validate<User>(userSchema, data);
+
+		if (isUserInvalid)
+			throw new HttpError(HttpStatus.BAD_REQUEST, isUserInvalid);
+
 		const newUser = new UserModel(data).toPlainObject<User>();
 		const [fields, sequence] =
 			queryService.createFieldsAndSequence<User>(newUser);
@@ -37,7 +47,8 @@ class UserService implements Service {
 		});
 
 		const user = await this.repository.create(newUser, query);
-		if (!user) throw "Cant create user";
+		if (!user)
+			throw new HttpError(HttpStatus.BAD_REQUEST, "Cannot create user");
 		return user;
 	}
 }
