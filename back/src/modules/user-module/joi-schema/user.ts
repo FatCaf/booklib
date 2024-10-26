@@ -3,9 +3,10 @@ import Joi from "joi";
 const { object, string } = Joi.types();
 
 const userSchema = object.keys({
-	name: string.pattern(/^\s*$/).required(),
-	password: string.pattern(/^\s*$/).required(),
+	name: string.min(1).required(),
+	password: string.min(8).required(),
 	email: string.email().required(),
+	role: string,
 });
 
 export default userSchema;
