@@ -12,7 +12,7 @@ class AbstractModel {
 	}
 
 	public beforeInsert(): void {
-		this.createdAt = this.createdAt = new Date().toISOString();
+		this.createdAt = this.updatedAt = new Date().toISOString();
 	}
 
 	public beforeUpdate(): void {
