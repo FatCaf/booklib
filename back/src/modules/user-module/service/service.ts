@@ -1,11 +1,8 @@
 import { DataBase } from "../../../common/enums/database/database";
 import { HttpStatus } from "../../../common/enums/http-status/http-status";
 import { Queries } from "../../../common/enums/queries/queries";
-import generateToken from "../../../helpers/generate-token/generate-token";
-import hashPassword from "../../../helpers/hash-password/hash-password";
 import { HttpError } from "../../../helpers/http-error/http-error";
 import validate from "../../../helpers/joi-validate/validate";
-import verifyPassword from "../../../helpers/verify-password/verify-password";
 import queryService from "../../../service/query-service/query.service";
 import userSchema from "../joi-schema/user";
 import { UserModel } from "../model/model";
@@ -20,9 +17,7 @@ class UserService implements Service {
 		this.repository = repository;
 	}
 
-	public async login(
-		data: Pick<User, "password" | "email">,
-	): Promise<{ user: User; token: string }> {
+	public async login(data: Pick<User, "password" | "email">): Promise<User> {
 		const field = queryService.createFieldsWithSequence<{ email: string }>({
 			email: data.email,
 		});
@@ -32,14 +27,7 @@ class UserService implements Service {
 		});
 		const user = await this.repository.search(data.email, query1);
 
-		if (await verifyPassword(data.password, user.password)) {
-			const token = generateToken(user.id, user.role);
-
-			return {
-				user,
-				token,
-			};
-		}
+		if (user.password === data.password) return user;
 
 		throw new HttpError(HttpStatus.UNAUTHORIZED, "Invalid login or password");
 	}
@@ -50,9 +38,6 @@ class UserService implements Service {
 			throw new HttpError(HttpStatus.BAD_REQUEST, isUserInvalid);
 
 		const newUser = new UserModel(data).toPlainObject<User>();
-
-		const hashedPassword = await hashPassword(newUser.password);
-
 		const [fields, sequence] =
 			queryService.createFieldsAndSequence<User>(newUser);
 		const query = queryService.generateQuery(Queries.CREATE, {
@@ -61,14 +46,7 @@ class UserService implements Service {
 			sequence,
 		});
 
-		const user = await this.repository.create(
-			{
-				...newUser,
-				password: hashedPassword,
-			},
-			query,
-		);
-
+		const user = await this.repository.create(newUser, query);
 		if (!user)
 			throw new HttpError(HttpStatus.BAD_REQUEST, "Cannot create user");
 		return user;
