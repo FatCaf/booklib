@@ -1,9 +1,9 @@
 import type { Request, RequestHandler, Response } from "express";
 import { HttpStatus } from "../../../common/enums/http-status/http-status";
 import { HttpError } from "../../../helpers/http-error/http-error";
+import type { Controller } from "../common/types/controller/controller";
+import type { SearchQuery } from "../common/types/search-query/search-query";
 import type { BookService } from "../service/service";
-import type { Controller } from "../types/controller/controller";
-import type { SearchQuery } from "../types/search-query/search-query";
 
 class BookController implements Controller {
 	private bookService: BookService;
