@@ -1,28 +1,29 @@
-import type { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, RequestHandler, Response } from "express";
+import jwt from "jsonwebtoken";
 import { HttpStatus } from "../../common/enums/http-status/http-status";
+import { JWT_SECRET } from "../../helpers/get-envs/get-envs";
 
 class MiddlewareService {
-	public async permissionMiddleware(
-		req: Request,
-		res: Response,
-		next: NextFunction,
-	): Promise<void> {
-		const authHeader = req.headers.authorization || "";
-		if (!authHeader || !authHeader.startsWith("Basic ")) {
-			res.status(HttpStatus.UNAUTHORIZED).json({ message: "Unauthorized" });
-		}
+	public permissionMiddleware(): RequestHandler {
+		return async (req: Request, res: Response, next: NextFunction) => {
+			const token = req.headers.authorization?.replace("Bearer ", "");
 
-		const base64Credentials = authHeader.split(" ")[1];
-		const credentials = Buffer.from(base64Credentials, "base64").toString(
-			"utf-8",
-		);
-		const [username, password] = credentials.split(":");
+			if (!token) {
+				res.status(HttpStatus.FORBIDDEN).json({ message: "Unauthorized" });
+				return;
+			}
 
-		if (username === "admin" && password === "admin") {
+			if (!JWT_SECRET) {
+				res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+					message: "Unable to process request, jwt secret is undefined",
+				});
+				return;
+			}
+
+			const decoded = jwt.verify(token, JWT_SECRET);
+			console.log(decoded);
 			next();
-		} else {
-			res.status(HttpStatus.UNAUTHORIZED).json({ message: "Unauthorized" });
-		}
+		};
 	}
 }
 
