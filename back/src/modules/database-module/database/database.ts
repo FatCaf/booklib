@@ -1,5 +1,6 @@
-import pkg from 'pg';
-import type { Config } from '../types/config/config';
+import pkg from "pg";
+import loggerService from "../../../service/logger-service/logger.service";
+import type { Config } from "../types/config/config";
 
 class Database {
 	private readonly config: Config;
@@ -12,11 +13,13 @@ class Database {
 	}
 
 	public async connect() {
-		console.log('Establishing db connection');
+		loggerService.info("Establishing db connection");
 		await this.client
 			.connect()
-			.then(() => console.log('Connection established'))
-			.catch((error) => console.error(error.message));
+			.then(() => loggerService.info("Connection established"))
+			.catch((error) => {
+				loggerService.error(error);
+			});
 	}
 }
 

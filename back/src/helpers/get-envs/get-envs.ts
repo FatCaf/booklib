@@ -19,8 +19,6 @@ const DB_NAME = process.env.DB_NAME;
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRATION = process.env.JWT_EXPIRATION;
 
-const SALT = process.env.SALT;
-
 export {
 	DB_PASSWORD,
 	DB_HOST,
@@ -29,5 +27,4 @@ export {
 	DB_NAME,
 	JWT_SECRET,
 	JWT_EXPIRATION,
-	SALT,
 };
