@@ -8,7 +8,6 @@ import type { Book } from "../common/types/book/book";
 import type { SearchQuery } from "../common/types/search-query/search-query";
 import type { Service } from "../common/types/service/service";
 import bookSchema from "../joi-schema/book";
-import { BookModel } from "../model/model";
 import type { BookRepository } from "../repository/repository";
 
 class BookService implements Service {
@@ -55,15 +54,13 @@ class BookService implements Service {
 		return books.slice(0, offset);
 	}
 
-	public async create(data: Book): Promise<Book> {
-		const isBookInvalid = validate<Book>(bookSchema.create, data);
+	public async create(data: Partial<Book>): Promise<Book> {
+		const isBookInvalid = validate<Partial<Book>>(bookSchema.create, data);
 
 		if (isBookInvalid)
 			throw new HttpError(HttpStatus.BAD_REQUEST, isBookInvalid);
 
-		const book = new BookModel(data).toPlainObject<Book>();
-
-		const [fields, sequence] = queryService.createFieldsAndSequence(book);
+		const [fields, sequence] = queryService.createFieldsAndSequence(data);
 
 		const query = queryService.generateQuery(Queries.CREATE, {
 			table: DataBase.BOOKS,
@@ -71,7 +68,7 @@ class BookService implements Service {
 			sequence,
 		});
 
-		const newBook = await this.repository.create(book, query);
+		const newBook = await this.repository.create(data, query);
 
 		if (!newBook)
 			throw new HttpError(HttpStatus.BAD_REQUEST, "Cannot create book");
@@ -85,13 +82,11 @@ class BookService implements Service {
 		if (isBookInvalid)
 			throw new HttpError(HttpStatus.BAD_REQUEST, isBookInvalid);
 
-		const oldBook = await this.getById(id);
-
-		const editedBook = new BookModel(oldBook).update<Book>(data);
+		await this.getById(id);
 
 		const fields = queryService.createFieldsWithSequence({
-			...editedBook,
 			id,
+			...data,
 		});
 
 		const query = queryService.generateQuery(Queries.EDIT, {
@@ -99,7 +94,7 @@ class BookService implements Service {
 			fields,
 		});
 
-		const book = await this.repository.edit(editedBook, query);
+		const book = await this.repository.edit({ id, ...data}, query);
 
 		if (!book)
 			throw new HttpError(HttpStatus.BAD_REQUEST, "Cannot update book");

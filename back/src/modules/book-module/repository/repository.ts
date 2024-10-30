@@ -24,11 +24,11 @@ class BookRepository extends AbstractRepository<Book> {
 		return (await this.db.query(query, [param])).rows[0];
 	}
 
-	public async create(data: Book, query: string): Promise<Book> {
+	public async create(data: Partial<Book>, query: string): Promise<Book> {
 		return (await this.db.query(query, [...Object.values(data)])).rows[0];
 	}
 
-	public async edit(data: Book, query: string): Promise<Book> {
+	public async edit(data: Partial<Book>, query: string): Promise<Book> {
 		return (await this.db.query(query, [...Object.values(data)])).rows[0];
 	}
 

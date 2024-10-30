@@ -24,19 +24,19 @@ class BookRouter extends AbstractRouter {
 		this.router
 			.route(Routes.CREATE)
 			.post(
-				middlewareService.permissionMiddleware(),
+				// middlewareService.permissionMiddleware(),
 				this.bookController.create,
 			);
 		this.router
 			.route(Routes.EDIT)
 			.patch(
-				middlewareService.permissionMiddleware(),
+				// middlewareService.permissionMiddleware(),
 				this.bookController.edit,
 			);
 		this.router
 			.route(Routes.DELETE)
 			.delete(
-				middlewareService.permissionMiddleware(),
+				// middlewareService.permissionMiddleware(),
 				this.bookController.delete,
 			);
 	}

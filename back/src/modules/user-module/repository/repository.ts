@@ -11,7 +11,7 @@ class UserRepository extends AbstractRepository<User> {
 		this.db = db.client;
 	}
 
-	public async create(data: User, query: string): Promise<User> {
+	public async create(data: Partial<User>, query: string): Promise<User> {
 		return (await this.db.query(query, [...Object.values(data)])).rows[0];
 	}
 
