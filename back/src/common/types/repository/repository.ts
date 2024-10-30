@@ -3,5 +3,5 @@ export interface Repository<T> {
 	search(param: string | number, query: string): Promise<T>;
 	create(data: T, query: string): Promise<T>;
 	delete(id: string, query: string): Promise<T>;
-	edit(data: T, query: string): Promise<T>;
+	edit(data: Partial<T>, query: string): Promise<T>;
 }

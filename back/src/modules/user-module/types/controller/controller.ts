@@ -1,6 +1,7 @@
-import {RequestHandler} from "express";
+import type { RequestHandler } from 'express';
 
 export interface Controller {
-    login: RequestHandler,
-    register: RequestHandler
+	login: RequestHandler;
+	register: RequestHandler;
+	borrowBook: RequestHandler;
 }

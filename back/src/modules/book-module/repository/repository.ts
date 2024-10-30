@@ -1,7 +1,7 @@
-import type { Client } from "pg";
-import { AbstractRepository } from "../../../common/abstractions/repository/repository";
-import type { Database } from "../../database-module/database/database";
-import type { Book } from "../common/types/book/book";
+import type { Client } from 'pg';
+import { AbstractRepository } from '../../../common/abstractions/repository/repository';
+import type { Database } from '../../database-module/database/database';
+import type { Book } from '../common/types/book/book';
 
 class BookRepository extends AbstractRepository<Book> {
 	private db: Client;
@@ -13,7 +13,7 @@ class BookRepository extends AbstractRepository<Book> {
 
 	public async getAll(
 		query: string,
-		data?: Record<string, any>,
+		data?: Record<string, any>
 	): Promise<Book[]> {
 		const queryParams = data ? Object.values(data) : [];
 
@@ -28,7 +28,7 @@ class BookRepository extends AbstractRepository<Book> {
 		return (await this.db.query(query, [...Object.values(data)])).rows[0];
 	}
 
-	public async edit(data: Book, query: string): Promise<Book> {
+	public async edit(data: Partial<Book>, query: string): Promise<Book> {
 		return (await this.db.query(query, [...Object.values(data)])).rows[0];
 	}
 

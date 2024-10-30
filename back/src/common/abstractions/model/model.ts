@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 class AbstractModel {
 	public id!: string;
@@ -25,7 +25,13 @@ class AbstractModel {
 		for (const key of Object.keys(data)) {
 			const value = data[key as keyof T];
 			if (value !== undefined) {
-				(this as Record<string, unknown>)[key] = value;
+				const currentValue = (this as Record<string, unknown>)[key];
+
+				if (Array.isArray(currentValue)) {
+					(this as Record<string, unknown>)[key] = [...currentValue, value];
+				} else {
+					(this as Record<string, unknown>)[key] = value;
+				}
 			}
 		}
 
