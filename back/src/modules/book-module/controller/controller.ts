@@ -1,10 +1,8 @@
 import type { Request, RequestHandler, Response } from 'express';
-import { HttpStatus } from '../../../common/enums/http-status/http-status';
-import { HttpError } from '../../../helpers/http-error/http-error';
-import type { Controller } from '../common/types/controller/controller';
-import type { SearchQuery } from '../common/types/search-query/search-query';
-import type { BookService } from '../service/service';
-import handleError from '../../../helpers/handle-error/handle-error';
+import { HttpStatus } from '@enums/enums';
+import type { Controller, SearchQuery } from '@books/types/types';
+import type { BookService } from '@books/service/service';
+import { handleError } from '@helpers/helpers';
 
 class BookController implements Controller {
 	private bookService: BookService;

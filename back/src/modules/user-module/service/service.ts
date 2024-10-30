@@ -1,16 +1,15 @@
-import { DataBase } from "../../../common/enums/database/database";
-import { HttpStatus } from "../../../common/enums/http-status/http-status";
-import { Queries } from "../../../common/enums/queries/queries";
-import generateToken from "../../../helpers/generate-token/generate-token";
-import hashPassword from "../../../helpers/hash-password/hash-password";
-import { HttpError } from "../../../helpers/http-error/http-error";
-import validate from "../../../helpers/joi-validate/validate";
-import verifyPassword from "../../../helpers/verify-password/verify-password";
-import queryService from "../../../service/query-service/query.service";
-import userSchema from "../joi-schema/user";
-import type { UserRepository } from "../repository/repository";
-import type { Service } from "../types/service/service";
-import type { User } from "../types/user/user";
+import { DataBase, Queries, HttpStatus } from '@enums/enums';
+import {
+	generateToken,
+	hashPassword,
+	HttpError,
+	validate,
+	verifyPassword,
+} from '@helpers/helpers';
+import queryService from '@services/query-service/query.service';
+import userSchema from '@user/joi/user';
+import type { UserRepository } from '@user/repository/repository';
+import type { Service, User } from '@user/types/types';
 
 class UserService implements Service {
 	private repository: UserRepository;
@@ -20,7 +19,7 @@ class UserService implements Service {
 	}
 
 	public async login(
-		data: Pick<User, "password" | "email">,
+		data: Pick<User, 'password' | 'email'>
 	): Promise<{ user: User; token: string }> {
 		const field = queryService.createFieldsWithSequence<{ email: string }>({
 			email: data.email,
@@ -40,7 +39,7 @@ class UserService implements Service {
 			};
 		}
 
-		throw new HttpError(HttpStatus.UNAUTHORIZED, "Invalid login or password");
+		throw new HttpError(HttpStatus.UNAUTHORIZED, 'Invalid login or password');
 	}
 	public async register(data: Partial<User>): Promise<User> {
 		const isUserInvalid = validate<Partial<User>>(userSchema, data);
@@ -52,8 +51,7 @@ class UserService implements Service {
 
 		data.role = data.role ? data.role : 'user';
 
-		const [fields, sequence] =
-			queryService.createFieldsAndSequence(data);
+		const [fields, sequence] = queryService.createFieldsAndSequence(data);
 		const query = queryService.generateQuery(Queries.CREATE, {
 			table: DataBase.USERS,
 			fields,
@@ -65,11 +63,11 @@ class UserService implements Service {
 				...data,
 				password: hashedPassword,
 			},
-			query,
+			query
 		);
 
 		if (!user)
-			throw new HttpError(HttpStatus.BAD_REQUEST, "Cannot create user");
+			throw new HttpError(HttpStatus.BAD_REQUEST, 'Cannot create user');
 		return user;
 	}
 }

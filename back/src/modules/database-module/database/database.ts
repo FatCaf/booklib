@@ -1,6 +1,6 @@
-import pkg from "pg";
-import loggerService from "../../../service/logger-service/logger.service";
-import type { Config } from "../types/config/config";
+import pkg from 'pg';
+import loggerService from '@services/logger-service/logger.service';
+import type { Config } from '../types/config/config';
 
 class Database {
 	private readonly config: Config;
@@ -13,10 +13,10 @@ class Database {
 	}
 
 	public async connect() {
-		loggerService.info("Establishing db connection");
+		loggerService.info('Establishing db connection');
 		await this.client
 			.connect()
-			.then(() => loggerService.info("Connection established"))
+			.then(() => loggerService.info('Connection established'))
 			.catch((error) => {
 				loggerService.error(error);
 			});

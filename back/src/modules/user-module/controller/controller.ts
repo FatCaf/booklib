@@ -1,8 +1,8 @@
 import type { Request, RequestHandler, Response } from 'express';
-import { HttpStatus } from '../../../common/enums/http-status/http-status';
-import type { UserService } from '../service/service';
-import type { Controller } from '../types/controller/controller';
-import handleError from '../../../helpers/handle-error/handle-error';
+import { HttpStatus } from '@enums/enums';
+import type { UserService } from '@user/service/service';
+import type { Controller } from '@user/types/controller/controller';
+import { handleError } from '@helpers/helpers';
 
 class UserController implements Controller {
 	private service: UserService;

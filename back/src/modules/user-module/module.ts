@@ -1,11 +1,11 @@
-import type { Application } from "express";
-import { AbstractModule } from "../../common/abstractions/module/module";
-import { Routes } from "../../common/enums/routes/routes";
-import type { Database } from "../database-module/database/database";
-import { UserController } from "./controller/controller";
-import { UserRepository } from "./repository/repository";
-import { UserRouter } from "./router/router";
-import { UserService } from "./service/service";
+import type { Application } from 'express';
+import { AbstractModule } from '@abstractions/abstractions';
+import { Routes } from '@enums/enums';
+import type { Database } from '@database/database';
+import { UserController } from './controller/controller';
+import { UserRepository } from './repository/repository';
+import { UserRouter } from './router/router';
+import { UserService } from './service/service';
 
 class UserModule extends AbstractModule {
 	private readonly controller: UserController;

@@ -1,8 +1,8 @@
-import express from "express";
-import { BookModule } from "../book-module/module";
-import type { Database } from "../database-module/database/database";
-import { DatabaseModule } from "../database-module/module";
-import { UserModule } from "../user-module/module";
+import express from 'express';
+import { BookModule } from '../book-module/module';
+import type { Database } from '@database/database';
+import { DatabaseModule } from '../database-module/module';
+import { UserModule } from '../user-module/module';
 
 class Application {
 	private readonly database: Database;
@@ -26,7 +26,7 @@ class Application {
 		this.userModule.initModule();
 
 		this.app.listen(3000, () => {
-			console.log("Server running on port 3000");
+			console.log('Server running on port 3000');
 		});
 	}
 }

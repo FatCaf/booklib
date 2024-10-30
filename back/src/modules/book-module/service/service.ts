@@ -1,14 +1,9 @@
-import { DataBase } from "../../../common/enums/database/database";
-import { HttpStatus } from "../../../common/enums/http-status/http-status";
-import { Queries } from "../../../common/enums/queries/queries";
-import { HttpError } from "../../../helpers/http-error/http-error";
-import validate from "../../../helpers/joi-validate/validate";
-import queryService from "../../../service/query-service/query.service";
-import type { Book } from "../common/types/book/book";
-import type { SearchQuery } from "../common/types/search-query/search-query";
-import type { Service } from "../common/types/service/service";
-import bookSchema from "../joi-schema/book";
-import type { BookRepository } from "../repository/repository";
+import { HttpStatus, DataBase, Queries } from '@enums/enums';
+import { validate, HttpError } from '@helpers/helpers';
+import queryService from '@services/query-service/query.service';
+import type { Book, SearchQuery, Service } from '@books/types/types';
+import bookSchema from '@books/joi/book';
+import type { BookRepository } from '@books/repository/repository';
 
 class BookService implements Service {
 	private repository: BookRepository;
@@ -26,7 +21,7 @@ class BookService implements Service {
 
 		const book = await this.repository.search(id, query);
 
-		if (!book) throw new HttpError(HttpStatus.NOT_FOUND, "Book not found");
+		if (!book) throw new HttpError(HttpStatus.NOT_FOUND, 'Book not found');
 
 		return book;
 	}
@@ -71,7 +66,7 @@ class BookService implements Service {
 		const newBook = await this.repository.create(data, query);
 
 		if (!newBook)
-			throw new HttpError(HttpStatus.BAD_REQUEST, "Cannot create book");
+			throw new HttpError(HttpStatus.BAD_REQUEST, 'Cannot create book');
 
 		return newBook;
 	}
@@ -94,10 +89,10 @@ class BookService implements Service {
 			fields,
 		});
 
-		const book = await this.repository.edit({ id, ...data}, query);
+		const book = await this.repository.edit({ id, ...data }, query);
 
 		if (!book)
-			throw new HttpError(HttpStatus.BAD_REQUEST, "Cannot update book");
+			throw new HttpError(HttpStatus.BAD_REQUEST, 'Cannot update book');
 
 		return book;
 	}
@@ -114,7 +109,7 @@ class BookService implements Service {
 		if (!deletedBook)
 			throw new HttpError(
 				HttpStatus.NOT_FOUND,
-				"Cannot delete book, it does not exist",
+				'Cannot delete book, it does not exist'
 			);
 
 		return deletedBook;

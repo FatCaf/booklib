@@ -1,13 +1,13 @@
-import * as crypto from "node:crypto";
+import * as crypto from 'node:crypto';
 
-export default function hashPassword(password: string | undefined): Promise<string> {
+export function hashPassword(password: string | undefined): Promise<string> {
 	if (!password) throw new Error('No password provided');
-	
-	const salt = crypto.randomBytes(16).toString("hex");
+
+	const salt = crypto.randomBytes(16).toString('hex');
 	return new Promise((resolve, reject) => {
 		crypto.scrypt(password, salt, 64, (err, derivedKey) => {
 			if (err) reject(err);
-			resolve(`${salt}:${derivedKey.toString("hex")}`);
+			resolve(`${salt}:${derivedKey.toString('hex')}`);
 		});
 	});
 }
