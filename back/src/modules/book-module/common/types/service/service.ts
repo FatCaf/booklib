@@ -5,7 +5,7 @@ export interface Service {
 	getAll(offset: number): Promise<Book[]>;
 	getAllSpecify(searchQuery: SearchQuery): Promise<Book[]>;
 	getById(id: string): Promise<Book>;
-	create(data: Book): Promise<Book>;
+	create(data: Partial<Book>): Promise<Book>;
 	delete(id: string): Promise<Book>;
-	edit(id: string, data: Book): Promise<Book>;
+	edit(id: string, data: Partial<Book>): Promise<Book>;
 }

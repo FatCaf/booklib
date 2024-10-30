@@ -1,7 +1,7 @@
 import type { Client } from 'pg';
-import { AbstractRepository } from '../../../common/abstractions/repository/repository';
-import type { Database } from '../../database-module/database/database';
-import type { Book } from '../common/types/book/book';
+import { AbstractRepository } from '@abstractions/abstractions';
+import type { Database } from '@database/database';
+import type { Book } from '@books/types/types';
 
 class BookRepository extends AbstractRepository<Book> {
 	private db: Client;
@@ -24,7 +24,7 @@ class BookRepository extends AbstractRepository<Book> {
 		return (await this.db.query(query, [param])).rows[0];
 	}
 
-	public async create(data: Book, query: string): Promise<Book> {
+	public async create(data: Partial<Book>, query: string): Promise<Book> {
 		return (await this.db.query(query, [...Object.values(data)])).rows[0];
 	}
 

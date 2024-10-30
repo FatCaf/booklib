@@ -1,4 +1,4 @@
-import { HttpError } from '../../helpers/http-error/http-error';
+import { HttpError } from '@helpers/helpers';
 
 class LoggerService {
 	info(message: string) {

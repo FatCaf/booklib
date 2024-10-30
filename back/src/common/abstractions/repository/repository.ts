@@ -1,7 +1,7 @@
-import type { Repository } from '../../types/repository/repository';
+import type { Repository } from '@app-types/types';
 
 class AbstractRepository<T> implements Repository<T> {
-	edit(data: T, query: string): Promise<T> {
+	edit(data: Partial<T>, query: string): Promise<T> {
 		throw new Error('Method not implemented.');
 	}
 	search(param: string | number, query: string): Promise<T> {

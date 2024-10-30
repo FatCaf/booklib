@@ -25,8 +25,66 @@
 		"module": "ES2020", /* Specify what module code is generated. */
 		// "rootDir": "./",                                  /* Specify the root folder within your source files. */
 		"moduleResolution": "Node", /* Specify how TypeScript looks up a file from a given module specifier. */
-		// "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
-		// "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
+		"baseUrl": "./src", /* Specify the base directory to resolve non-relative module names. */
+		"paths": {
+			"@abstractions/*": [
+				"./common/abstractions/*"
+			],
+			"@enums/*": [
+				"./common/enums/*"
+			],
+			"@app-types/*": [
+				"./common/types/*"
+			],
+			"@helpers/*": [
+				"./helpers/*"
+			],
+			"@services/*": [
+				"./service/*"
+			],
+			"@database/*": [
+				"./modules/database-module/database/*"
+			],
+			"@application/*": [
+				"./modules/application-module/*"
+			],
+			"@books/types/*": [
+				"./modules/book-module/common/types/*"
+			],
+			"@books/enums/*": [
+				"./modules/book-module/common/enums/*"
+			],
+			"@books/controller/*": [
+				"./modules/book-module/controller/*"
+			],
+			"@books/repository/*": [
+				"./modules/book-module/repository/*"
+			],
+			"@books/service/*": [
+				"./modules/book-module/service/*"
+			],
+			"@books/joi/*": [
+				"./modules/book-module/joi-schema/*"
+			],
+			"@user/controller/*": [
+				"./modules/user-module/controller/*"
+			],
+			"@user/service/*": [
+				"./modules/user-module/service/*"
+			],
+			"@user/repository/*": [
+				"./modules/user-module/repository/*"
+			],
+			"@user/joi/*": [
+				"./modules/user-module/joi-schema/*"
+			],
+			"@user/types/*": [
+				"./modules/user-module/common/types/*"
+			],
+			"@user/enums/*": [
+				"./modules/user-module/common/enum/*"
+			]
+		}, /* Specify a set of entries that re-map imports to additional lookup locations. */
 		// "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
 		// "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
 		// "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
@@ -78,7 +136,7 @@
 		"strict": true, /* Enable all strict type-checking options. */
 		// "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
 		// "strictNullChecks": true,                         /* When type checking, take into account 'null' and 'undefined'. */
-		// "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
+		"strictFunctionTypes": true, /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
 		// "strictBindCallApply": true,                      /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
 		// "strictPropertyInitialization": true,             /* Check for class properties that are declared but not set in the constructor. */
 		// "noImplicitThis": true,                           /* Enable error reporting when 'this' is given the type 'any'. */

@@ -3,7 +3,7 @@ import { HttpError } from '../http-error/http-error';
 import { HttpStatus } from '../../common/enums/http-status/http-status';
 import loggerService from '../../service/logger-service/logger.service';
 
-export default function handleError(error: unknown, res: Response) {
+export function handleError(error: unknown, res: Response) {
 	loggerService.error(error);
 
 	if (error instanceof HttpError) {

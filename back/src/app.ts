@@ -1,4 +1,4 @@
-import application from './modules/application-module/application';
+import application from '@application/application';
 
 async function start(): Promise<void> {
 	await application.start();

@@ -1,15 +1,9 @@
-import { DataBase } from "../../../common/enums/database/database";
-import { HttpStatus } from "../../../common/enums/http-status/http-status";
-import { Queries } from "../../../common/enums/queries/queries";
-import { HttpError } from "../../../helpers/http-error/http-error";
-import validate from "../../../helpers/joi-validate/validate";
-import queryService from "../../../service/query-service/query.service";
-import type { Book } from "../common/types/book/book";
-import type { SearchQuery } from "../common/types/search-query/search-query";
-import type { Service } from "../common/types/service/service";
-import bookSchema from "../joi-schema/book";
-import { BookModel } from "../model/model";
-import type { BookRepository } from "../repository/repository";
+import { HttpStatus, DataBase, Queries } from '@enums/enums';
+import { validate, HttpError } from '@helpers/helpers';
+import queryService from '@services/query-service/query.service';
+import type { Book, SearchQuery, Service } from '@books/types/types';
+import bookSchema from '@books/joi/book';
+import type { BookRepository } from '@books/repository/repository';
 
 class BookService implements Service {
 	private repository: BookRepository;
@@ -27,7 +21,7 @@ class BookService implements Service {
 
 		const book = await this.repository.search(id, query);
 
-		if (!book) throw new HttpError(HttpStatus.NOT_FOUND, "Book not found");
+		if (!book) throw new HttpError(HttpStatus.NOT_FOUND, 'Book not found');
 
 		return book;
 	}
@@ -55,15 +49,13 @@ class BookService implements Service {
 		return books.slice(0, offset);
 	}
 
-	public async create(data: Book): Promise<Book> {
-		const isBookInvalid = validate<Book>(bookSchema.create, data);
+	public async create(data: Partial<Book>): Promise<Book> {
+		const isBookInvalid = validate<Partial<Book>>(bookSchema.create, data);
 
 		if (isBookInvalid)
 			throw new HttpError(HttpStatus.BAD_REQUEST, isBookInvalid);
 
-		const book = new BookModel(data).toPlainObject<Book>();
-
-		const [fields, sequence] = queryService.createFieldsAndSequence(book);
+		const [fields, sequence] = queryService.createFieldsAndSequence(data);
 
 		const query = queryService.generateQuery(Queries.CREATE, {
 			table: DataBase.BOOKS,
@@ -71,10 +63,10 @@ class BookService implements Service {
 			sequence,
 		});
 
-		const newBook = await this.repository.create(book, query);
+		const newBook = await this.repository.create(data, query);
 
 		if (!newBook)
-			throw new HttpError(HttpStatus.BAD_REQUEST, "Cannot create book");
+			throw new HttpError(HttpStatus.BAD_REQUEST, 'Cannot create book');
 
 		return newBook;
 	}
@@ -85,13 +77,11 @@ class BookService implements Service {
 		if (isBookInvalid)
 			throw new HttpError(HttpStatus.BAD_REQUEST, isBookInvalid);
 
-		const oldBook = await this.getById(id);
-
-		const editedBook = new BookModel(oldBook).update<Book>(data);
+		await this.getById(id);
 
 		const fields = queryService.createFieldsWithSequence({
-			...editedBook,
 			id,
+			...data,
 		});
 
 		const query = queryService.generateQuery(Queries.EDIT, {
@@ -99,10 +89,10 @@ class BookService implements Service {
 			fields,
 		});
 
-		const book = await this.repository.edit(editedBook, query);
+		const book = await this.repository.edit({ id, ...data }, query);
 
 		if (!book)
-			throw new HttpError(HttpStatus.BAD_REQUEST, "Cannot update book");
+			throw new HttpError(HttpStatus.BAD_REQUEST, 'Cannot update book');
 
 		return book;
 	}
@@ -119,7 +109,7 @@ class BookService implements Service {
 		if (!deletedBook)
 			throw new HttpError(
 				HttpStatus.NOT_FOUND,
-				"Cannot delete book, it does not exist",
+				'Cannot delete book, it does not exist'
 			);
 
 		return deletedBook;
