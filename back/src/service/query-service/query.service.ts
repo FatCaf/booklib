@@ -10,7 +10,7 @@ class QueryService {
 			case Queries.SEARCH:
 				return `SELECT * FROM ${params.table} WHERE ${params.field}`;
 			case Queries.GET_ALL_SPECIFY:
-				return `SELECT * FROM ${params.table} ${params.searchString}`;
+				return `SELECT * FROM ${params.table} WHERE ${params.searchString}`;
 			case Queries.CREATE:
 				return `INSERT INTO ${params.table} ${params.fields} VALUES ${params.sequence} RETURNING *`;
 			case Queries.EDIT:
@@ -18,6 +18,11 @@ class QueryService {
 					params.fields,
 					1
 				)} WHERE ${params.fields?.split(',')[0]} RETURNING *`;
+			case Queries.EDIT_MULTIPLE_PARAMS:
+				return `UPDATE ${params.table} SET ${this.splitFields(
+					params.fields,
+					2
+				)} WHERE ${params.searchString} RETURNING *`;
 			case Queries.DELETE:
 				return `DELETE FROM ${params.table} WHERE ${params.field} RETURNING *`;
 			default:
@@ -67,14 +72,14 @@ class QueryService {
 		return this.concatSearchStrings(searchStrings);
 	}
 
-	private concatSearchStrings(strings: string[]): string {
-		const head = `WHERE ${strings[0]} `;
+	public concatSearchStrings(strings: string[]): string {
+		const head = `${strings[0]} `;
 		let tail = '';
 		if (strings.length > 1) {
 			tail = strings
 				.slice(1)
 				.map((str) => {
-					return `AND ${str}`;
+					return `AND ${str} `;
 				})
 				.join(' ');
 		}

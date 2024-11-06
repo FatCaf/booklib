@@ -1,4 +1,4 @@
-import Joi, { array } from 'joi';
+import Joi from 'joi';
 
 const { object, string } = Joi.types();
 
@@ -12,12 +12,6 @@ const userSchema = {
 	edit: object.keys({
 		name: string,
 		email: string,
-		borrowedBooks: array().items(
-			object.keys({
-				book_id: string,
-				returnDate: string,
-			})
-		),
 	}),
 };
 

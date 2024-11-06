@@ -1,4 +1,4 @@
-import type { BorrowBook } from '../borrow-book/borrow-book';
+import type { BorrowBook } from '@user/types/types';
 
 export interface User {
 	id: string;

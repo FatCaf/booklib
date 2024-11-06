@@ -1,12 +1,15 @@
 export const Routes = {
 	API: {
-		V1: "/api/v1",
+		V1: '/api/v1',
 	},
 	BOOKS: {
-		BOOKS: "/books",
+		BOOKS: '/books',
 	},
 	USERS: {
-		ADMIN: "/admin",
-		USER: "/user",
+		ADMIN: '/admin',
+		USER: '/user',
+	},
+	BORROW: {
+		BORROW: '/borrow',
 	},
 } as const;

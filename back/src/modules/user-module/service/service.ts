@@ -1,4 +1,5 @@
 import { DataBase, Queries, HttpStatus } from '@enums/enums';
+import { SearchParams } from '@app-types/types';
 import {
 	generateToken,
 	hashPassword,
@@ -93,14 +94,11 @@ class UserService implements Service {
 		if (isUserInvalid)
 			throw new HttpError(HttpStatus.BAD_REQUEST, isUserInvalid);
 
-		const oldUser = await this.search({ id });
-
-		const editedUser = new UserModel(oldUser).update<User>(data);
+		await this.search({ id });
 
 		const fields = queryService.createFieldsWithSequence({
-			...data,
-			updatedAt: editedUser.updatedAt,
 			id,
+			...data,
 		});
 
 		const query = queryService.generateQuery(Queries.EDIT, {
@@ -108,7 +106,7 @@ class UserService implements Service {
 			fields,
 		});
 
-		const user = await this.repository.edit(data, query);
+		const user = await this.repository.edit({ id, ...data }, query);
 
 		if (!user)
 			throw new HttpError(
@@ -117,12 +115,6 @@ class UserService implements Service {
 			);
 
 		return user;
-	}
-
-	public async borrowBook(data: BorrowBook, id: string): Promise<void> {
-		const user = await this.search({ id });
-
-		const updatedUser = await this.edit({ borrowedBooks: data }, id);
 	}
 }
 
