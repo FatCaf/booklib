@@ -1,7 +1,6 @@
 import type { RequestHandler } from 'express';
 
 export interface Controller {
-	login: RequestHandler;
-	register: RequestHandler;
+	edit: RequestHandler;
 	borrowBook: RequestHandler;
 }

@@ -1,6 +1,9 @@
-import type { Repository } from '@app-types/types';
+import type { Repository, SearchParams } from '@app-types/types';
 
 class AbstractRepository<T> implements Repository<T> {
+	searchByMultipleParams(params: SearchParams, query: string): Promise<T> {
+		throw new Error('Method not implemented.');
+	}
 	edit(data: Partial<T>, query: string): Promise<T> {
 		throw new Error('Method not implemented.');
 	}

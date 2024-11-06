@@ -18,6 +18,10 @@ class UserRepository extends AbstractRepository<User> {
 	public async search(param: string | number, query: string): Promise<User> {
 		return (await this.db.query(query, [param])).rows[0];
 	}
+
+	public async edit(data: Partial<User>, query: string): Promise<User> {
+		return (await this.db.query(query, [...Object.values(data)])).rows[0];
+	}
 }
 
 export { UserRepository };

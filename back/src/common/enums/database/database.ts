@@ -1,4 +1,5 @@
 export const DataBase = {
 	BOOKS: 'books',
-	USERS: 'users'
+	USERS: 'users',
+	BORROWED_BOOKS: 'borrowed_books',
 } as const;

@@ -66,6 +66,24 @@
 			"@books/joi/*": [
 				"./modules/book-module/joi-schema/*"
 			],
+			"@diary/types/*": [
+				"./modules/readers-diary-module/common/types/*"
+			],
+			"@diary/repository/*": [
+				"./modules/readers-diary-module/repository/*"
+			],
+			"@diary/service/*": [
+				"./modules/readers-diary-module/service/*"
+			],
+			"@diary/controller/*": [
+				"./modules/readers-diary-module/controller/*"
+			],
+			"@diary/router/*": [
+				"./modules/readers-diary-module/router/*"
+			],
+			"@diary/joi/*": [
+				"./modules/readers-diary-module/joi-schema/*"
+			],
 			"@user/controller/*": [
 				"./modules/user-module/controller/*"
 			],
