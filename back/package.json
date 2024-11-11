@@ -5,13 +5,16 @@
 	"main": "app.ts",
 	"type": "module",
 	"scripts": {
-		"dev": "npx tsx --watch src/app.ts"
+		"dev": "npx tsx --watch src/app.ts",
+		"migration:up": "npx tsx src/modules/database-module/migration/migration-assistant.ts up",
+		"migration:down": "npx tsx src/modules/database-module/migration/migration-assistant.ts down"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
 		"cors": "^2.8.5",
+		"cross-env": "^7.0.3",
 		"dotenv": "^16.4.5",
 		"express": "^4.21.1",
 		"joi": "^17.13.3",
